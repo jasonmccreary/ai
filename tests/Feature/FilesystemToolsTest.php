@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use JMac\Testing\Double;
 use JMac\Testing\Matching\Argument;
-use function Laravel\Ai\agent;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Promptable;
@@ -23,8 +22,9 @@ use Laravel\Ai\Tools\Filesystem\ListFiles;
 use Laravel\Ai\Tools\Filesystem\ReadFile;
 use Laravel\Ai\Tools\Filesystem\WriteFile;
 use Laravel\Ai\Tools\Request;
-
 use Laravel\Ai\Tools\ToolNameResolver;
+
+use function Laravel\Ai\agent;
 
 beforeEach(function (): void {
     Storage::fake('local');

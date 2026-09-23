@@ -1,9 +1,9 @@
 <?php
 
-use JMac\Testing\Double;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Events\Dispatcher;
 use Illuminate\JsonSchema\Types\Type;
+use JMac\Testing\Double;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Providers\TextProvider;
 use Laravel\Ai\Contracts\Tool;

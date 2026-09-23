@@ -1,11 +1,11 @@
 <?php
 
-use JMac\Testing\Double;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Aws\MockHandler;
 use Aws\Result;
 use Aws\Sts\StsClient;
 use Illuminate\Contracts\Events\Dispatcher;
+use JMac\Testing\Double;
 use Laravel\Ai\Gateway\Bedrock\Concerns\CreatesBedrockClient;
 use Laravel\Ai\Providers\BedrockProvider;
 use Laravel\Ai\Providers\Provider;

@@ -1,7 +1,7 @@
 <?php
 
-use JMac\Testing\Double;
 use Illuminate\Contracts\Events\Dispatcher;
+use JMac\Testing\Double;
 use Laravel\Ai\Gateway\Bedrock\BedrockImageGateway;
 use Laravel\Ai\Gateway\Bedrock\BedrockRerankingGateway;
 use Laravel\Ai\Gateway\Bedrock\BedrockTextGateway;
@@ -11,8 +11,7 @@ beforeEach(function (): void {
     $this->dispatcher = Double::for(Dispatcher::class);
 });
 
-afterEach(function (): void {
-});
+afterEach(function (): void {});
 
 test('can be instantiated with config', function (): void {
     $config = [
