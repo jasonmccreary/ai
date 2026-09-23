@@ -1,6 +1,5 @@
 <?php
 
-use JMac\Testing\Double;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
@@ -8,6 +7,8 @@ use Illuminate\JsonSchema\JsonSchemaTypeFactory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use JMac\Testing\Double;
+use function Laravel\Ai\agent;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Promptable;
@@ -21,9 +22,8 @@ use Laravel\Ai\Tools\Filesystem\ListFiles;
 use Laravel\Ai\Tools\Filesystem\ReadFile;
 use Laravel\Ai\Tools\Filesystem\WriteFile;
 use Laravel\Ai\Tools\Request;
-use Laravel\Ai\Tools\ToolNameResolver;
 
-use function Laravel\Ai\agent;
+use Laravel\Ai\Tools\ToolNameResolver;
 
 beforeEach(function (): void {
     Storage::fake('local');

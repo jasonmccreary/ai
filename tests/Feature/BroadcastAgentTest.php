@@ -1,11 +1,11 @@
 <?php
 
-use JMac\Testing\Double;
 use Illuminate\Broadcasting\AnonymousEvent;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
+use JMac\Testing\Double;
 use Laravel\Ai\Approvals\Decision;
 use Laravel\Ai\Approvals\Decisions;
 use Laravel\Ai\Jobs\BroadcastAgent;
