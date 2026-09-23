@@ -1,11 +1,8 @@
 <?php
 
-use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
-use JMac\Testing\Double;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Image;
 use Laravel\Ai\Jobs\GenerateImage;
@@ -155,32 +152,20 @@ test('image can be stored under an explicit path and name', function (): void {
 });
 
 test('storing an image publicly passes public visibility to the disk', function (): void {
-    $writes = [];
-
-    $disk = Double::for(Filesystem::class);
-    $disk->allows('put')->resolves(function (string $path, string $contents, array $options) use (&$writes): bool {
-        $writes[] = ['path' => $path, 'options' => $options];
-
-        return true;
-    });
-
-    $factory = Double::for(FilesystemFactory::class);
-    $factory->allows('disk')->with('images')->returns($disk);
-
-    app()->instance(FilesystemFactory::class, $factory);
+    Storage::fake('images', ['visibility' => 'private']);
 
     Image::fake([base64_encode('raw-bytes')]);
 
     $response = Image::of('A sunset')->generate();
 
-    $response->store('generated', 'images');
-    $response->storePublicly('generated', 'images');
-    $response->storePubliclyAs('sunset.png', null, 'images');
+    $private = $response->store('private', 'images');
+    $public = $response->storePublicly('public', 'images');
+    $named = $response->storePubliclyAs('sunset.png', null, 'images');
 
-    expect($writes[0]['options'])->toBe([])
-        ->and($writes[1]['options'])->toBe(['visibility' => 'public'])
-        ->and($writes[2]['options'])->toBe(['visibility' => 'public'])
-        ->and($writes[2]['path'])->toBe('sunset.png');
+    expect(Storage::disk('images')->getVisibility($private))->toBe('private')
+        ->and(Storage::disk('images')->getVisibility($public))->toBe('public')
+        ->and(Storage::disk('images')->getVisibility($named))->toBe('public')
+        ->and($named)->toBe('sunset.png');
 });
 
 test('queued images can be faked', function (): void {
