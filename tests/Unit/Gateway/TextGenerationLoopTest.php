@@ -1324,7 +1324,7 @@ test('a pre-validated streamed resume executes the approved tool exactly once', 
 
 function textGenerationLoopAgentTool(Closure|string $text = 'sub-agent result'): AgentTool
 {
-    $agent = Double::for(Agent::class.','.CanActAsTool::class);
+    $agent = Double::for(Agent::class, CanActAsTool::class);
     $agent->allows('name')->returns('research_agent');
     $agent->expects('prompt')->never();
     $agent->allows('stream')->resolves(fn (): StreamableAgentResponse => new StreamableAgentResponse(
@@ -1425,7 +1425,7 @@ test('preliminary output joins the text of separate sub-agent steps the way the 
 });
 
 test('a sub-agent runs synchronously through the non-streaming loop', function (): void {
-    $agent = Double::for(Agent::class.','.CanActAsTool::class);
+    $agent = Double::for(Agent::class, CanActAsTool::class);
     $agent->allows('name')->returns('research_agent');
     $agent->expects('prompt')->returns(new AgentResponse(
         'sub-invocation', 'synchronous result', new TextUsage(3, 4), new Meta('fake', 'sub-model')
@@ -1454,7 +1454,7 @@ test('a sub-agent runs synchronously through the non-streaming loop', function (
 });
 
 test('a sub-agent is not executed on the final streamed step', function (): void {
-    $agent = Double::for(Agent::class.','.CanActAsTool::class);
+    $agent = Double::for(Agent::class, CanActAsTool::class);
     $agent->allows('name')->returns('research_agent');
     $agent->expects('prompt')->never();
     $agent->expects('stream')->never();
