@@ -1065,7 +1065,7 @@ test('it allows a single tool search wrapper on a supporting provider', function
 function textGenerationLoopProvider(): TextProvider
 {
     $provider = Double::for(TextProvider::class);
-    $provider->shouldReceive('name')->andReturn('fake');
+    $provider->allows('name')->returns('fake');
 
     return $provider;
 }
@@ -1073,7 +1073,7 @@ function textGenerationLoopProvider(): TextProvider
 function textGenerationLoopToolSearchProvider(): TextProvider
 {
     $provider = Double::for(TextProvider::class, SupportsToolSearch::class);
-    $provider->shouldReceive('name')->andReturn('fake');
+    $provider->allows('name')->returns('fake');
 
     return $provider;
 }
@@ -1325,9 +1325,9 @@ test('a pre-validated streamed resume executes the approved tool exactly once', 
 function textGenerationLoopAgentTool(Closure|string $text = 'sub-agent result'): AgentTool
 {
     $agent = Double::for(Agent::class.','.CanActAsTool::class);
-    $agent->shouldReceive('name')->andReturn('research_agent');
-    $agent->shouldNotReceive('prompt');
-    $agent->shouldReceive('stream')->andReturnUsing(fn (): StreamableAgentResponse => new StreamableAgentResponse(
+    $agent->allows('name')->returns('research_agent');
+    $agent->expects('prompt')->never();
+    $agent->allows('stream')->resolves(fn (): StreamableAgentResponse => new StreamableAgentResponse(
         'sub-invocation',
         $text instanceof Closure ? $text : fn (): Generator => yield from [
             (new TextDelta('sub-delta', 'sub-message', $text, time()))->withInvocationId('sub-invocation'),
@@ -1426,11 +1426,11 @@ test('preliminary output joins the text of separate sub-agent steps the way the 
 
 test('a sub-agent runs synchronously through the non-streaming loop', function (): void {
     $agent = Double::for(Agent::class.','.CanActAsTool::class);
-    $agent->shouldReceive('name')->andReturn('research_agent');
-    $agent->shouldReceive('prompt')->once()->andReturn(new AgentResponse(
+    $agent->allows('name')->returns('research_agent');
+    $agent->expects('prompt')->returns(new AgentResponse(
         'sub-invocation', 'synchronous result', new TextUsage(3, 4), new Meta('fake', 'sub-model')
     ));
-    $agent->shouldNotReceive('stream');
+    $agent->expects('stream')->never();
 
     $toolCall = new ToolCall('call-sub-agent', 'research_agent', ['task' => 'Research'], 'call-sub-agent');
     $gateway = new TextGenerationLoopFakeGateway([
@@ -1455,9 +1455,9 @@ test('a sub-agent runs synchronously through the non-streaming loop', function (
 
 test('a sub-agent is not executed on the final streamed step', function (): void {
     $agent = Double::for(Agent::class.','.CanActAsTool::class);
-    $agent->shouldReceive('name')->andReturn('research_agent');
-    $agent->shouldNotReceive('prompt');
-    $agent->shouldNotReceive('stream');
+    $agent->allows('name')->returns('research_agent');
+    $agent->expects('prompt')->never();
+    $agent->expects('stream')->never();
 
     $toolCall = new ToolCall('call-sub-agent', 'research_agent', ['task' => 'Research'], 'call-sub-agent');
 

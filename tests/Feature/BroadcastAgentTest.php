@@ -153,9 +153,9 @@ test('an oversized broadcast frame does not abort the stream and then still reso
     AssistantAgent::fake(['Hello world']);
 
     $pending = Double::for(AnonymousEvent::class);
-    $pending->shouldReceive('as')->andReturnSelf();
-    $pending->shouldReceive('with')->andReturnSelf();
-    $pending->shouldReceive('sendNow')->andThrow(new BroadcastException('Payload too large'));
+    $pending->allows('as')->returns($pending);
+    $pending->allows('with')->returns($pending);
+    $pending->allows('sendNow')->throws(new BroadcastException('Payload too large'));
 
     Broadcast::shouldReceive('on')->andReturn($pending);
 

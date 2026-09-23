@@ -158,14 +158,14 @@ test('storing an image publicly passes public visibility to the disk', function 
     $writes = [];
 
     $disk = Double::for(Filesystem::class);
-    $disk->shouldReceive('put')->andReturnUsing(function (string $path, string $contents, array $options) use (&$writes): bool {
+    $disk->allows('put')->resolves(function (string $path, string $contents, array $options) use (&$writes): bool {
         $writes[] = ['path' => $path, 'options' => $options];
 
         return true;
     });
 
     $factory = Double::for(FilesystemFactory::class);
-    $factory->shouldReceive('disk')->with('images')->andReturn($disk);
+    $factory->allows('disk')->with('images')->returns($disk);
 
     app()->instance(FilesystemFactory::class, $factory);
 

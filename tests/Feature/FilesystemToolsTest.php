@@ -145,7 +145,7 @@ test('write file creates a file', function (): void {
 
 test('write file reports write failures', function (): void {
     $disk = Double::for(Filesystem::class);
-    $disk->shouldReceive('put')->once()->with('out.txt', 'written')->andReturnFalse();
+    $disk->expects('put')->with('out.txt', 'written')->returns(false);
 
     $result = (new WriteFile($disk))->handle(new Request(['path' => 'out.txt', 'contents' => 'written']));
 
@@ -178,8 +178,8 @@ test('delete file does not report directories as files', function (): void {
 
 test('delete file reports delete failures', function (): void {
     $disk = Double::for(Filesystem::class);
-    $disk->shouldReceive('size')->once()->with('gone.txt')->andReturn(1);
-    $disk->shouldReceive('delete')->once()->with('gone.txt')->andReturnFalse();
+    $disk->expects('size')->with('gone.txt')->returns(1);
+    $disk->expects('delete')->with('gone.txt')->returns(false);
 
     $result = (new DeleteFile($disk))->handle(new Request(['path' => 'gone.txt']));
 

@@ -17,8 +17,8 @@ test('an agent tool streams its events by default and returns its final text', f
     ], new Meta('fake', 'model'));
 
     $agent = Double::for(Agent::class);
-    $agent->shouldReceive('stream')->once()->andReturn($stream);
-    $agent->shouldNotReceive('prompt');
+    $agent->expects('stream')->returns($stream);
+    $agent->expects('prompt')->never();
 
     $generator = (new AgentTool($agent))->stream(new Request(['task' => 'Do the thing']));
 
@@ -31,7 +31,7 @@ test('an agent tool streams its events by default and returns its final text', f
 
 test('a failing sub-agent surfaces its error as the tool result on the streaming path', function (): void {
     $agent = Double::for(Agent::class);
-    $agent->shouldReceive('stream')->once()->andThrow(new RuntimeException('provider exploded'));
+    $agent->expects('stream')->throws(new RuntimeException('provider exploded'));
 
     $generator = (new AgentTool($agent))->stream(new Request(['task' => 'Do the thing']));
 
