@@ -1,11 +1,11 @@
 <?php
 
-use JMac\Testing\Double;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use JMac\Testing\Double;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Image;
 use Laravel\Ai\Jobs\GenerateImage;
