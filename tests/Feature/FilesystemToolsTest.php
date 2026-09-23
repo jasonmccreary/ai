@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use JMac\Testing\Double;
-use JMac\Testing\Matching\Argument;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Promptable;
@@ -145,13 +144,9 @@ test('write file creates a file', function (): void {
 });
 
 test('write file reports write failures', function (): void {
-    $disk = Double::for(Filesystem::class);
-    $disk->expects('put')->with(
-        Argument::satisfies(fn ($path): bool => (string) $path === 'out.txt'),
-        Argument::satisfies(fn ($contents): bool => (string) $contents === 'written'),
-    )->returns(false);
+    Storage::disk('local')->makeDirectory('out.txt');
 
-    $result = (new WriteFile($disk))->handle(new Request(['path' => 'out.txt', 'contents' => 'written']));
+    $result = (new WriteFile('local'))->handle(new Request(['path' => 'out.txt', 'contents' => 'written']));
 
     expect($result)->toBe('Unable to write [out.txt].');
 });
