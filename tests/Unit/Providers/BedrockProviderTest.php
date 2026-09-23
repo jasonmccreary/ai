@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Illuminate\Contracts\Events\Dispatcher;
 use Laravel\Ai\Gateway\Bedrock\BedrockImageGateway;
 use Laravel\Ai\Gateway\Bedrock\BedrockRerankingGateway;
@@ -7,7 +8,7 @@ use Laravel\Ai\Gateway\Bedrock\BedrockTextGateway;
 use Laravel\Ai\Providers\BedrockProvider;
 
 beforeEach(function (): void {
-    $this->dispatcher = Mockery::mock(Dispatcher::class);
+    $this->dispatcher = Double::for(Dispatcher::class);
 });
 
 afterEach(function (): void {

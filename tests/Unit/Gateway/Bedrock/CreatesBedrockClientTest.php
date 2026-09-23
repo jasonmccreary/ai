@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Aws\MockHandler;
 use Aws\Result;
@@ -83,7 +84,7 @@ test('configured headers are added before request signing', function (): void {
         'secret_access_key' => 'test-secret',
         'region' => 'us-east-1',
         'headers' => ['X-Session-Affinity' => 'abc-123'],
-    ], Mockery::mock(Dispatcher::class));
+    ], Double::for(Dispatcher::class));
 
     $client = bedrockClientTrait()->create($provider);
     $handler = new MockHandler([new Result]);

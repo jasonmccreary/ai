@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Illuminate\Broadcasting\AnonymousEvent;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Broadcasting\Channel;
@@ -151,7 +152,7 @@ test('failed event shares the invocation id with broadcasts from handle', functi
 test('an oversized broadcast frame does not abort the stream and then still resolves', function (): void {
     AssistantAgent::fake(['Hello world']);
 
-    $pending = Mockery::mock(AnonymousEvent::class);
+    $pending = Double::for(AnonymousEvent::class);
     $pending->shouldReceive('as')->andReturnSelf();
     $pending->shouldReceive('with')->andReturnSelf();
     $pending->shouldReceive('sendNow')->andThrow(new BroadcastException('Payload too large'));

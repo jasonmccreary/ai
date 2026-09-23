@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Events\Dispatcher;
 use Illuminate\JsonSchema\Types\Type;
@@ -59,8 +60,8 @@ function stubRunContext(Dispatcher $events, string $invocationId = 'inv_1'): Run
 {
     return new RunContext(
         $invocationId,
-        Mockery::mock(Agent::class),
-        Mockery::mock(TextProvider::class),
+        Double::for(Agent::class),
+        Double::for(TextProvider::class),
         'stub-model',
         $events,
     );

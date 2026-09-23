@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
@@ -143,7 +144,7 @@ test('write file creates a file', function (): void {
 });
 
 test('write file reports write failures', function (): void {
-    $disk = Mockery::mock(Filesystem::class);
+    $disk = Double::for(Filesystem::class);
     $disk->shouldReceive('put')->once()->with('out.txt', 'written')->andReturnFalse();
 
     $result = (new WriteFile($disk))->handle(new Request(['path' => 'out.txt', 'contents' => 'written']));
@@ -176,7 +177,7 @@ test('delete file does not report directories as files', function (): void {
 });
 
 test('delete file reports delete failures', function (): void {
-    $disk = Mockery::mock(Filesystem::class);
+    $disk = Double::for(Filesystem::class);
     $disk->shouldReceive('size')->once()->with('gone.txt')->andReturn(1);
     $disk->shouldReceive('delete')->once()->with('gone.txt')->andReturnFalse();
 
