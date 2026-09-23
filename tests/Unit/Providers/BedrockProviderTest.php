@@ -11,8 +11,6 @@ beforeEach(function (): void {
     $this->dispatcher = Double::for(Dispatcher::class);
 });
 
-afterEach(function (): void {});
-
 test('can be instantiated with config', function (): void {
     $config = [
         'driver' => 'bedrock',
