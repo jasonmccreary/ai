@@ -1327,7 +1327,7 @@ function textGenerationLoopAgentTool(Closure|string $text = 'sub-agent result'):
     $agent = Double::for(Agent::class, CanActAsTool::class);
     $agent->allows('name')->returns('research_agent');
     $agent->expects('prompt')->never();
-    $agent->allows('stream')->resolves(fn (): StreamableAgentResponse => new StreamableAgentResponse(
+    $agent->expects('stream')->times(minimum: 1)->resolves(fn (): StreamableAgentResponse => new StreamableAgentResponse(
         'sub-invocation',
         $text instanceof Closure ? $text : fn (): Generator => yield from [
             (new TextDelta('sub-delta', 'sub-message', $text, time()))->withInvocationId('sub-invocation'),

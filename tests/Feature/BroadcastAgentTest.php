@@ -155,7 +155,7 @@ test('an oversized broadcast frame does not abort the stream and then still reso
     $pending = Double::for(AnonymousEvent::class);
     $pending->allows('as')->returns($pending);
     $pending->allows('with')->returns($pending);
-    $pending->allows('sendNow')->throws(new BroadcastException('Payload too large'));
+    $pending->expects('sendNow')->times(minimum: 1)->throws(new BroadcastException('Payload too large'));
 
     Broadcast::shouldReceive('on')->andReturn($pending);
 
