@@ -26,6 +26,7 @@
     "require-dev": {
         "aws/aws-sdk-php": "^3.369.1",
         "driftingly/rector-laravel": "^2.5",
+        "jasonmccreary/double": "~0.10",
         "laravel/mcp": "^1.0",
         "laravel/pint": "^1.26",
         "mockery/mockery": "^1.6.12",
