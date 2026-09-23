@@ -12,7 +12,6 @@ beforeEach(function (): void {
 });
 
 afterEach(function (): void {
-    Mockery::close();
 });
 
 test('can be instantiated with config', function (): void {
