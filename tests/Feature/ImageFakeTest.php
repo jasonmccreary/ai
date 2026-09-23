@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -156,14 +157,14 @@ test('image can be stored under an explicit path and name', function (): void {
 test('storing an image publicly passes public visibility to the disk', function (): void {
     $writes = [];
 
-    $disk = Mockery::mock(Filesystem::class);
+    $disk = Double::for(Filesystem::class);
     $disk->shouldReceive('put')->andReturnUsing(function (string $path, string $contents, array $options) use (&$writes): bool {
         $writes[] = ['path' => $path, 'options' => $options];
 
         return true;
     });
 
-    $factory = Mockery::mock(FilesystemFactory::class);
+    $factory = Double::for(FilesystemFactory::class);
     $factory->shouldReceive('disk')->with('images')->andReturn($disk);
 
     app()->instance(FilesystemFactory::class, $factory);

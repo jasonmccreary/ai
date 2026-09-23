@@ -1,5 +1,6 @@
 <?php
 
+use JMac\Testing\Double;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Validation\ValidationException;
@@ -68,8 +69,8 @@ test('a validation failure is returned to the model as the tool result', functio
 
     $context = new RunContext(
         'inv_1',
-        Mockery::mock(Agent::class),
-        Mockery::mock(TextProvider::class),
+        Double::for(Agent::class),
+        Double::for(TextProvider::class),
         'stub-model',
         $events,
     );
